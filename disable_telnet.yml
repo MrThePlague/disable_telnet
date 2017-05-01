@@ -7,12 +7,12 @@
 
   tasks:
 
-  - name: Ensure Telnet is disabled
+  - name: Ensure Telnet feature is disabled
     nxos_feature:
       feature: telnet
       state: disabled
 
-  - name: Test TELNET
+  - name: Test to ensure Telnet is disabled
     shell: "telnet {{ inventory_hostname }}"
     register: telnet_result
     failed_when: "'Connection refused' not in telnet_result.stderr"
@@ -25,11 +25,19 @@
 
   tasks:
 
-  - name: Disable Telnet
+  - name: Disable Telnet on VTY lines 0 - 4
     ios_config:
       lines:
         - transport input ssh
       parents: line vty 0 4
+      authorize: yes
+      auth_pass: cisco
+
+  - name: Disable Telnet on VTY lines 5 - 15
+    ios_config:
+      lines:
+        - transport input ssh
+      parents: line vty 5 15
       authorize: yes
       auth_pass: cisco
 
@@ -46,7 +54,7 @@
 
   tasks:
 
-  - name: Disable Telnet
+  - name: Disable Telnet on VTY lines 0 - 4
     ios_config:
       lines:
         - transport input ssh
@@ -54,6 +62,14 @@
       authorize: yes
       auth_pass: cisco
       defaults: yes
+
+  - name: Disable Telnet on VTY lines 5 - 15
+    ios_config:
+      lines:
+        - transport input ssh
+      parents: line vty 5 15
+      authorize: yes
+      auth_pass: cisco
 
   - name: Test TELNET
     shell: "telnet {{ inventory_hostname }}"
