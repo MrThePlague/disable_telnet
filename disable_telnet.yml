@@ -1,0 +1,61 @@
+---
+# Gather facts from NX-OS switches
+
+- hosts: switches-nxos
+  connection: local
+  gather_facts: no
+
+  tasks:
+
+  - name: Ensure Telnet is disabled
+    nxos_feature:
+      feature: telnet
+      state: disabled
+
+  - name: Test TELNET
+    shell: "telnet {{ inventory_hostname }}"
+    register: telnet_result
+    failed_when: "'Connection refused' not in telnet_result.stderr"
+
+# Gather facts from IOS switches
+
+- hosts: switches-ios
+  connection: local
+  gather_facts: no
+
+  tasks:
+
+  - name: Disable Telnet
+    ios_config:
+      lines:
+        - transport input ssh
+      parents: line vty 0 4
+      authorize: yes
+      auth_pass: cisco
+
+  - name: Test TELNET
+    shell: "telnet {{ inventory_hostname }}"
+    register: telnet_result
+    failed_when: "'Connection refused' not in telnet_result.stderr"
+
+# Gather facts from IOS/IOS-XE Routers
+
+- hosts: routers
+  connection: local
+  gather_facts: no
+
+  tasks:
+
+  - name: Disable Telnet
+    ios_config:
+      lines:
+        - transport input ssh
+      parents: line vty 0 4
+      authorize: yes
+      auth_pass: cisco
+      defaults: yes
+
+  - name: Test TELNET
+    shell: "telnet {{ inventory_hostname }}"
+    register: telnet_result
+    failed_when: "'Connection refused' not in telnet_result.stderr"

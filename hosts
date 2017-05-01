@@ -1,0 +1,13 @@
+[switches-ios]
+172.16.1.63
+
+[switches-nxos]
+172.16.1.65
+
+[routers]
+172.16.1.61
+172.16.1.62
+
+[switches:children]
+switches-ios
+switches-nxos
