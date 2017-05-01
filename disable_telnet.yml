@@ -16,6 +16,7 @@
     shell: "telnet {{ inventory_hostname }}"
     register: telnet_result
     failed_when: "'Connection refused' not in telnet_result.stderr"
+    changed_when: False
 
 # Disable TELNET on Cisco IOS/IOS-XE switches
 
