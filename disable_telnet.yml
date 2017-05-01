@@ -1,5 +1,5 @@
 ---
-# Gather facts from NX-OS switches
+# Disable TELNET on NX-OS switches
 
 - hosts: switches-nxos
   connection: local
@@ -17,7 +17,7 @@
     register: telnet_result
     failed_when: "'Connection refused' not in telnet_result.stderr"
 
-# Gather facts from IOS switches
+# Disable TELNET on Cisco IOS/IOS-XE switches
 
 - hosts: switches-ios
   connection: local
@@ -46,7 +46,7 @@
     register: telnet_result
     failed_when: "'Connection refused' not in telnet_result.stderr"
 
-# Gather facts from IOS/IOS-XE Routers
+# Disable TELNET on IOS/IOS-XE Routers
 
 - hosts: routers
   connection: local
